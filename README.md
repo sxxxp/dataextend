@@ -245,3 +245,9 @@ python main.py
 - Robust Classification
 - Noise Robustness
 - Incremental Learning
+
+# 실행 결과
+
+선별적으로 데이터를 사용했을 때 일반적인 데이터 패턴을 더 잘 찾아낼 것이라고 예상했지만
+오히려 모든 데이터를 한번에 학습한 쪽이 결과가 더 좋았다. 성공한 데이터만을 학습해 버리니
+모델이 오히려 특정한 패턴만을 학습해버려 일반화 성능은 더 떨어지는 결과를 낳았다.
