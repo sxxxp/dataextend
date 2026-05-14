@@ -1,11 +1,19 @@
+import os
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+from matplotlib import transforms
 import torch
-import torch.nn as nn
-import torch.optim as optim
+from torchvision import datasets
 
-from torch.utils.data import Dataset, DataLoader, ConcatDataset, Subset
+from torch.utils.data import DataLoader, ConcatDataset, Subset
 
-from FixedNoiseMNIST import FixedNoiseMNIST
-from model import SimpleCNN, train_model, extract_success_samples
+from FixedNoiseDatasets import FixedNoiseDatasets
+from train import train_model, extract_success_samples
+from CIFAR10CNN import BetterCIFAR10CNN as CIFAR10CNN
+from MNISTCNN import SimpleCNN
+
+EPOCHS = 20
+DATASET = datasets.CIFAR10
 
 
 def main():
@@ -22,13 +30,15 @@ def main():
     test_datasets = {}
     for stage in range(5):
 
-        stage_datasets[stage] = FixedNoiseMNIST(
+        stage_datasets[stage] = FixedNoiseDatasets(
             stage=stage,
+            dataset=DATASET,
             train=True,
         )
 
-        test_datasets[stage] = FixedNoiseMNIST(
+        test_datasets[stage] = FixedNoiseDatasets(
             stage=stage,
+            dataset=DATASET,
             train=False,
         )
 
@@ -55,12 +65,12 @@ def main():
         shuffle=True,
     )
 
-    model0 = SimpleCNN()
+    model0 = CIFAR10CNN()
 
     train_model(
         model0,
         all_loader,
-        epochs=3,
+        epochs=EPOCHS,
         device=device,
     )
 
@@ -82,12 +92,12 @@ def main():
         model1_dataset, batch_size=batch_size, shuffle=True, num_workers=0
     )
 
-    model1 = SimpleCNN()
+    model1 = CIFAR10CNN()
 
     train_model(
         model1,
         model1_loader,
-        epochs=3,
+        epochs=EPOCHS,
         device=device,
     )
 
@@ -132,14 +142,14 @@ def main():
             shuffle=True,
         )
 
-        next_model = SimpleCNN()
+        next_model = CIFAR10CNN()
 
         print(f"\n===== Train Model{stage} =====")
 
         train_model(
             next_model,
             next_loader,
-            epochs=3,
+            epochs=EPOCHS,
             device=device,
         )
 
