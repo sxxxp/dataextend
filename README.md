@@ -42,12 +42,41 @@
 
 # Dataset
 
-본 연구에서는 MNIST 데이터셋을 사용한다.
+본 연구에서는 CIFAR-10 데이터셋을 사용한다.
 
-- Train Dataset: 60,000 images
+CIFAR-10은 다양한 객체(Class)를 포함하는 RGB 자연 이미지 데이터셋으로,
+MNIST보다 복잡한 시각적 특징과 높은 분류 난이도를 가진다.
+따라서 노이즈 환경에서의 일반화 성능과 robustness 분석에 더욱 적합하다.
+
+Dataset 정보:
+
+- Train Dataset: 50,000 images
 - Test Dataset: 10,000 images
-- Image Size: 28×28
-- Classes: 10 digits (0~9)
+- Image Size: 32×32
+- Color Channel: RGB (3 Channels)
+- Classes: 10 classes
+
+클래스 구성:
+
+- Airplane
+- Automobile
+- Bird
+- Cat
+- Deer
+- Dog
+- Frog
+- Horse
+- Ship
+- Truck
+
+데이터 증강(Data Augmentation):
+
+학습 데이터에는 일반화 성능 향상을 위해
+다음 augmentation을 적용하였다.
+
+- Random Crop
+- Random Horizontal Flip
+- Normalize
 
 ---
 
@@ -88,7 +117,7 @@ ReLU
 MaxPool
 Dropout(0.25)
 
---------------------------------
+---
 
 Conv2D(32 → 64)
 BatchNorm
@@ -101,7 +130,7 @@ ReLU
 MaxPool
 Dropout(0.25)
 
---------------------------------
+---
 
 Conv2D(64 → 128)
 BatchNorm
@@ -109,7 +138,7 @@ ReLU
 
 MaxPool
 
---------------------------------
+---
 
 Flatten
 
