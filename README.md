@@ -69,32 +69,75 @@
 
 # 모델 구조
 
-실험에는 간단한 CNN 기반 분류 모델을 사용한다.
+실험에는 CIFAR-10 분류를 위한 CNN 기반 모델을 사용한다.
+
+모델은 다중 Convolution Block과 Batch Normalization,
+Dropout을 포함하여 노이즈 환경에서의 학습 안정성과
+일반화 성능을 향상시키도록 구성하였다.
 
 구조:
 
-```text
-Conv2D(1 → 32)
+Conv2D(3 → 32)
+BatchNorm
 ReLU
+
+Conv2D(32 → 32)
+BatchNorm
+ReLU
+
 MaxPool
+Dropout(0.25)
+
+--------------------------------
 
 Conv2D(32 → 64)
+BatchNorm
 ReLU
+
+Conv2D(64 → 64)
+BatchNorm
+ReLU
+
 MaxPool
+Dropout(0.25)
+
+--------------------------------
+
+Conv2D(64 → 128)
+BatchNorm
+ReLU
+
+MaxPool
+
+--------------------------------
 
 Flatten
 
-Linear(3136 → 128)
+Linear(2048 → 256)
 ReLU
 
-Linear(128 → 10)
-```
+Dropout(0.5)
+
+Linear(256 → 10)
+
+입력 이미지 크기:
+
+32 × 32 × 3 (RGB)
+
+출력 클래스:
+
+10 Classes
 
 총 파라미터 수:
 
-```text
-421,642
-```
+약 750,000 parameters
+
+특징:
+
+- Batch Normalization을 통한 학습 안정화
+- Dropout을 통한 노이즈 환경 regularization
+- Deep Convolution Block 기반 feature extraction
+- CIFAR-10 환경에 최적화된 구조
 
 ---
 
